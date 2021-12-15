@@ -1,0 +1,84 @@
+﻿@page "/employee"
+@using Microsoft.Extensions.Logging
+@using Crud_Blazor.Services
+@using Crud_Blazor.Models
+@inject ILogger<EmployeePage> Logger
+@inject IEmployeesService EmployeesService
+@inject HttpClient Http
+
+<h1>@_title</h1>
+<form>
+<div class="form-group row">
+<label for="firstName" class="col-sm-2 col-form-label">First
+Name</label>
+<div class="col-sm-10">
+<input class="form-control" placeholder="FirstName" @bind="_employee.FirstName" />
+</div>
+</div>
+<div class="form-group row">
+<label for="lastName" class="col-sm-2 col-form-label">Last
+Name</label>
+<div class="col-sm-10">
+<input class="form-control" placeholder="LastName" @bind="_employee.LastName"/>
+</div>
+</div>
+<input type="button" value="Add" class="btn btn-primary" @onclick="Add"/>
+<input type="button" value="Update" class="btn btn-primary" @onclick="Update"/>
+</form>
+<br />
+@if (_employees == null)
+{
+<p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+    <thead>
+    <tr>
+    <th>ID</th>
+    <th>FirstName</th>
+    <th>LastName</th>
+    <th>Control</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var emp in _employees)
+    {
+    <tr>
+    <td>@emp.Id</td>
+    <td>@emp.FirstName</td>
+    <td>@emp.LastName</td>
+    <td>
+    <input type="button" value="Edit" class="btn btnprimary"
+    />
+    <input type="button" value="Del" class="btn btndanger"
+    />
+    </td>
+    </tr>
+    }
+    </tbody>
+    </table>
+}
+<p><em>Loading...</em></p>
+
+@code{
+    private string _title;
+    private Employee _employee;
+    private List<Employee> _employees;
+    protected override async Task OnInitializedAsync()
+        {
+            _title = "Employee Management";
+            _employee = new Employee();
+            _employees = (await EmployeesService.GetAsync()).ToList();
+        }
+    
+    private async Task Add(){
+        @* Logger.LogInformation("aa"); *@
+        Logger.LogInformation("Add Start!");
+        var newEmp = await EmployeesService.Add(_employee);
+        _employees.Add(newEmp);
+    }
+    private void Update(){
+        Logger.LogInformation("Update Start!");
+    }
+}
