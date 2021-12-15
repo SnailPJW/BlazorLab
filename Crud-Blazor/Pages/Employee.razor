@@ -1,4 +1,45 @@
-﻿@page "/fetchdata"
+﻿@page "/employee"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Employee> Logger
+
+<h1>@_title</h1>
+<form>
+<div class="form-group row">
+<label for="firstName" class="col-sm-2 col-form-label">First
+Name</label>
+<div class="col-sm-10">
+<input class="form-control" placeholder="FirstName" />
+</div>
+</div>
+<div class="form-group row">
+<label for="lastName" class="col-sm-2 col-form-label">Last
+Name</label>
+<div class="col-sm-10">
+<input class="form-control" placeholder="LastName" />
+</div>
+</div>
+<input type="button" value="Add" class="btn btn-primary" @onclick="Add"/>
+<input type="button" value="Update" class="btn btn-primary" @onclick="Update"/>
+</form>
+<br />
+<p><em>Loading...</em></p>
+
+@code{
+    private string _title;
+    protected override void OnInitialized()
+        {
+            _title = "test1";
+        }
+    
+    private void Add(){
+        Logger.LogInformation("aa");
+        Logger.LogInformation("Add Start!");
+    }
+    private void Update(){
+        Logger.LogInformation("Update Start!");
+    }
+}
+@* 
 @inject HttpClient Http
 
 <PageTitle>Weather forecast</PageTitle>
@@ -54,4 +95,4 @@ else
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
-}
+} *@
